@@ -1,2 +1,2 @@
 # MC-bot
-This is a mc anarchy bot me and my friend will be making (or vibe coding) rule is that there r 0 manual coding to see would AI break it or make it better than i would code.
+This is a minecraft bot for "7B7T" anarchy server, still working on it. | Made by: Sigmaclutch & peakar.
