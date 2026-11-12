@@ -1,5 +1,6 @@
 // Impordime vajalikud teegid ja moodulid / Import required libraries and modules
 const mineflayer = require('mineflayer')
+const { pathfinder } = require('mineflayer-pathfinder')
 const config = require('./config.json')
 const setupAuthMe = require('./lib/authme')
 const setupViewer = require('./lib/viewer')
@@ -15,6 +16,9 @@ function startBot() {
     username: config.username,
     version: config.version || false
   })
+
+  // Laeme teekonna leidmise plugina / Load the pathfinder plugin
+  bot.loadPlugin(pathfinder)
 
   // Käivitame lisamoodulid / Initialize additional modules
   setupAuthMe(bot, config)
