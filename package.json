@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/SilentClutchPlays-projekts/MC-bot/issues"
   },
-  "homepage": "https://github.com/SilentClutchPlays-projekts/MC-bot/tree/main#readme"
+  "homepage": "https://github.com/SilentClutchPlays-projekts/MC-bot/tree/main#readme",
+  "dependencies": {
+    "mineflayer": "^4.39.0"
+  }
 }
