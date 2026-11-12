@@ -10,5 +10,30 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm install
-      - run: node bot.js
+      
+      # Installime süsteemi teegid 3D vaaturi jaoks / Install system libraries for the 3D viewer
+      - name: Install dependencies for canvas
+        run: sudo apt-get update && sudo apt-get install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+
+      - name: Install Node modules
+        run: npm install
+
+      # Laeme alla Cloudflare Tunneli / Download Cloudflare Tunnel
+      - name: Setup Cloudflare Tunnel
+        run: |
+          wget -q https://github.com
+          chmod +x cloudflared-linux-amd64
+          sudo mv cloudflared-linux-amd64 /usr/local/bin/cloudflared
+
+      # Käivitame tunnelid ja boti / Start tunnels and the bot
+      - name: Run Bot and Dashboard Tunnel
+        run: |
+          cloudflared tunnel --url http://localhost:6768 > viewer_tunnel.log 2>&1 &
+          cloudflared tunnel --url http://localhost:6767 > dashboard_tunnel.log 2>&1 &
+          sleep 5
+          echo "=== DASHBOARD LINK (PORT 6767) ==="
+          grep -o 'https://[-a-zA-Z0-9.]*\.trycloudflare\.com' dashboard_tunnel.log | head -n 1
+          echo "=== 3D VIEWER LINK (PORT 6768) ==="
+          grep -o 'https://[-a-zA-Z0-9.]*\.trycloudflare\.com' viewer_tunnel.log | head -n 1
+          echo "=================================="
+          node bot.js

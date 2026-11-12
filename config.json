@@ -3,5 +3,6 @@
   "port": 25565,
   "username": "MC_bot",
   "version": "1.21.11",
-  "password": "!ThisIsWorldsBestBot!"
+  "password": "!ThisIsWorldsBestBot!",
+  "viewerPort": 6767
 }
