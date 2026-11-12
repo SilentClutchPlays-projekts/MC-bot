@@ -18,22 +18,24 @@ jobs:
       - name: Install Node modules
         run: npm install
 
-      # Laeme alla Cloudflare Tunneli / Download Cloudflare Tunnel
-      - name: Setup Cloudflare Tunnel
-        run: |
-          wget -q https://github.com
-          chmod +x cloudflared-linux-amd64
-          sudo mv cloudflared-linux-amd64 /usr/local/bin/cloudflared
-
       # Käivitame tunnelid ja boti / Start tunnels and the bot
-      - name: Run Bot and Dashboard Tunnel
+      - name: Run Bot and Dashboard
         run: |
-          cloudflared tunnel --url http://localhost:6768 > viewer_tunnel.log 2>&1 &
-          cloudflared tunnel --url http://localhost:6767 > dashboard_tunnel.log 2>&1 &
-          sleep 5
-          echo "=== DASHBOARD LINK (PORT 6767) ==="
-          grep -o 'https://[-a-zA-Z0-9.]*\.trycloudflare\.com' dashboard_tunnel.log | head -n 1
-          echo "=== 3D VIEWER LINK (PORT 6768) ==="
-          grep -o 'https://[-a-zA-Z0-9.]*\.trycloudflare\.com' viewer_tunnel.log | head -n 1
-          echo "=================================="
+          # Hangime avaliku IP (vajalik Localtunneli parooliks) / Get public IP (needed for Localtunnel password)
+          echo "=== TUNNEL PASSWORD (COPY THIS IP) ==="
+          curl -s https://icanhazip.com
+          echo "======================================="
+
+          # Käivitame tunnelid pordile 6767 ja 6768 / Start tunnels for port 6767 and 6768
+          npx --yes localtunnel --port 6767 > dash.log 2>&1 &
+          npx --yes localtunnel --port 6768 > view.log 2>&1 &
+          sleep 6
+
+          DASH_URL=$(grep -o 'https://[^ ]*' dash.log | head -n 1)
+          VIEW_URL=$(grep -o 'https://[^ ]*' view.log | head -n 1)
+
+          echo "=== OPEN THIS LINK IN YOUR BROWSER ==="
+          echo "${DASH_URL}/?viewer=${VIEW_URL}"
+          echo "======================================"
+
           node bot.js
