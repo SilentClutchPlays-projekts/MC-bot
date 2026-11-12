@@ -17,17 +17,32 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 
-      # Installime Node teegid (sh cloudflared) / Install Node modules (including cloudflared)
+      # Installime Node teegid / Install Node modules
       - name: Install Node modules
         run: npm install
 
-      # Käivitame kiire Cloudflare tunneli ja boti / Start fast Cloudflare tunnel and the bot
+      # Käivitame tunneli, ootame lingi ilmumist ja käivitame boti / Start tunnel, wait for link, and start bot
       - name: Run Bot and Fast Dashboard
         run: |
           npx cloudflared tunnel --url http://127.0.0.1:6767 > tunnel.log 2>&1 &
-          sleep 6
+          
+          # Ootame kuni 30 sekundit, kuni Cloudflare link on valmis / Wait up to 30 seconds until the Cloudflare link is ready
+          for i in {1..30}; do
+            URL=$(grep -o 'https://[-a-zA-Z0-9.]*\.trycloudflare\.com' tunnel.log | head -n 1)
+            if [ -n "$URL" ]; then
+              break
+            fi
+            sleep 1
+          done
+
           echo "=========================================="
           echo "OPEN THIS FAST DASHBOARD LINK:"
-          grep -o 'https://[-a-zA-Z0-9.]*\.trycloudflare\.com' tunnel.log | head -n 1
+          if [ -n "$URL" ]; then
+            echo "$URL"
+          else
+            echo "Link failed to generate. Tunnel log:"
+            cat tunnel.log
+          fi
           echo "=========================================="
+          
           node bot.js
