@@ -1,47 +1,63 @@
-// Vestlusmoodul: saadab serverisse sõnumi iga 5 sekundi järel / Talk module: sends a chat message to the server every 5 seconds
+// Impordime vajalikud teegid ja moodulid / Import required libraries and modules
+const mineflayer = require('mineflayer')
+const { pathfinder } = require('mineflayer-pathfinder')
+const config = require('./config.json')
+const setupAuthMe = require('./lib/authme')
+const setupViewer = require('./lib/viewer')
+const setupTalk = require('./lib/talk')
 
-// Sõnum mida bot saadab / The message the bot sends
-const MESSAGE = 'peakar and clutch on top'
+// Peamine funktsioon boti käivitamiseks / Main function to start the bot
+function startBot() {
+  console.log(`[System] Connecting to ${config.host}:${config.port}...`)
 
-// Intervall millisekundites (5 sekundit) / Interval in milliseconds (5 seconds)
-const INTERVAL_MS = 5000
+  // Loome uue Mineflayeri boti instantsi / Create a new Mineflayer bot instance
+  const bot = mineflayer.createBot({
+    host: config.host,
+    port: config.port,
+    username: config.username,
+    version: config.version || false
+  })
 
-// Funktsioon mis ühendab vestlusmooduli botiga / Function that attaches the talk module to the bot
-function setupTalk(bot, config) {
-  // Võimaldab config.json failis väärtusi üle kirjutada / Allows overriding values in config.json
-  const message = (config && config.talkMessage) || MESSAGE
-  const interval = (config && config.talkInterval) || INTERVAL_MS
+  // Laeme teekonna leidmise plugina / Load the pathfinder plugin
+  bot.loadPlugin(pathfinder)
 
-  // Hoiame taimeri viidet, et seda saaks peatada / Keep the timer reference so it can be stopped
-  let timer = null
+  // Käivitame lisamoodulid / Initialize additional modules
+  setupAuthMe(bot, config)
+  setupViewer(bot, config)
+  setupTalk(bot, config)
 
-  // Peatab vestlustaimeri / Stops the talk timer
-  function stopTalking() {
-    if (timer) {
-      clearInterval(timer)
-      timer = null
-    }
-  }
+  // Sündmus: bot ühendus võrku / Event: bot connected to the network
+  bot.on('login', () => {
+    console.log('[System] Bot logged into the server network.')
+  })
 
-  // Käivitab vestlustaimeri / Starts the talk timer
-  function startTalking() {
-    // Kustutame vana taimeri, et ei tekiks topelt / Clear the old timer so there are no duplicates
-    stopTalking()
+  // Sündmus: bot sündis maailma / Event: bot spawned into the world
+  bot.on('spawn', () => {
+    console.log(`[System] ${config.username} has spawned in the world!`)
+  })
 
-    timer = setInterval(() => {
-      // Saadame sõnumi serveri vestlusesse / Send the message to the server chat
-      bot.chat(message)
-    }, interval)
+  // Sündmus: serveri vestlussõnum / Event: server chat message
+  bot.on('messagestr', (msg) => {
+    console.log('[CHAT]:', msg)
+  })
 
-    console.log(`[Talk] Started sending "${message}" every ${interval / 1000} seconds.`)
-  }
+  // Sündmus: bot visati serverist välja / Event: bot was kicked from the server
+  bot.on('kicked', (reason) => {
+    console.log('[Warning] Bot was kicked! Reason:', reason)
+  })
 
-  // Sündmus: bot sündis maailma, alustame rääkimist / Event: bot spawned, start talking
-  bot.on('spawn', startTalking)
+  // Sündmus: ühenduse viga / Event: connection error
+  bot.on('error', (err) => {
+    console.log('[Error] Connection error occurred:', err)
+  })
 
-  // Sündmused: ühendus katkes või visati välja, peatame taimeri / Events: disconnected or kicked, stop the timer
-  bot.on('end', stopTalking)
-  bot.on('kicked', stopTalking)
+  // Sündmus: ühendus katkes, proovime uuesti / Event: disconnected, attempting reconnect
+  bot.on('end', (reason) => {
+    console.log('[System] Disconnected from server. Reason:', reason)
+    console.log('[System] Reconnecting in 5 seconds...')
+    setTimeout(startBot, 5000)
+  })
 }
 
-module.exports = setupTalk
+// Käivitame boti / Start the bot
+startBot()
