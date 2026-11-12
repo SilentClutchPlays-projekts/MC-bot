@@ -23,6 +23,7 @@
     "mineflayer": "^4.39.0",
     "prismarine-viewer": "^1.33.0",
      "canvas": "3.2.3",
-     "http-proxy": "^1.18.1"
+     "http-proxy": "^1.18.1",
+     "cloudflared": "^0.7.0"
   }
 }
