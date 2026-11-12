@@ -1,5 +1,5 @@
 {
-  "host": "testserver",
+  "host": "TestServerForMe.aternos.me",
   "port": 25565,
   "username": "MC-bot",
   "password": "!ThisIsWorldsBestBot!"
