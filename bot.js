@@ -4,6 +4,7 @@ const { pathfinder } = require('mineflayer-pathfinder')
 const config = require('./config.json')
 const setupAuthMe = require('./lib/authme')
 const setupViewer = require('./lib/viewer')
+const setupTalk = require('./lib/talk')
 
 // Peamine funktsioon boti käivitamiseks / Main function to start the bot
 function startBot() {
@@ -23,6 +24,7 @@ function startBot() {
   // Käivitame lisamoodulid / Initialize additional modules
   setupAuthMe(bot, config)
   setupViewer(bot, config)
+  setupTalk(bot, config)
 
   // Sündmus: bot ühendus võrku / Event: bot connected to the network
   bot.on('login', () => {
