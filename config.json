@@ -1,7 +1,7 @@
 {
   "host": "TestServerForMe.aternos.me",
   "port": 25565,
-  "username": "MC-bot",
+  "username": "MC_bot",
   "version": "1.21.11",
   "password": "!ThisIsWorldsBestBot!"
 }
