@@ -11,31 +11,24 @@ jobs:
         with:
           node-version: '20'
       
-      # Installime süsteemi teegid 3D vaaturi jaoks / Install system libraries for the 3D viewer
-      - name: Install dependencies for canvas
-        run: sudo apt-get update && sudo apt-get install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+      # Installime süsteemi teegid ja Cloudflare Tunneli / Install system libraries and Cloudflare Tunnel
+      - name: Install dependencies and Cloudflared
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev curl
+          curl -L --output cloudflared.deb https://github.com
+          sudo dpkg -i cloudflared.deb
 
       - name: Install Node modules
         run: npm install
 
-      # Käivitame tunnelid ja boti / Start tunnels and the bot
-      - name: Run Bot and Dashboard
+      # Käivitame kiire Cloudflare tunneli ja boti / Start fast Cloudflare tunnel and the bot
+      - name: Run Bot and Fast Dashboard
         run: |
-          # Hangime avaliku IP (vajalik Localtunneli parooliks) / Get public IP (needed for Localtunnel password)
-          echo "=== TUNNEL PASSWORD (COPY THIS IP) ==="
-          curl -s https://icanhazip.com
-          echo "======================================="
-
-          # Käivitame tunnelid pordile 6767 ja 6768 / Start tunnels for port 6767 and 6768
-          npx --yes localtunnel --port 6767 > dash.log 2>&1 &
-          npx --yes localtunnel --port 6768 > view.log 2>&1 &
+          cloudflared tunnel --url http://127.0.0.1:6767 > tunnel.log 2>&1 &
           sleep 6
-
-          DASH_URL=$(grep -o 'https://[^ ]*' dash.log | head -n 1)
-          VIEW_URL=$(grep -o 'https://[^ ]*' view.log | head -n 1)
-
-          echo "=== OPEN THIS LINK IN YOUR BROWSER ==="
-          echo "${DASH_URL}/?viewer=${VIEW_URL}"
-          echo "======================================"
-
+          echo "=========================================="
+          echo "OPEN THIS FAST DASHBOARD LINK:"
+          grep -o 'https://[-a-zA-Z0-9.]*\.trycloudflare\.com' tunnel.log | head -n 1
+          echo "=========================================="
           node bot.js
