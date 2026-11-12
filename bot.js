@@ -2,19 +2,37 @@ const mineflayer = require('mineflayer')
 const config = require('./config.json')
 const setupAuthMe = require('./lib/authme')
 
+console.log(`Alustan ühendamist serveriga ${config.host}:${config.port}...`)
+
 const bot = mineflayer.createBot({
   host: config.host,
   port: config.port,
   username: config.username,
-  version: "1.21.11"
+  version: config.version || false
 })
 
-// Käivitame AuthMe loogika
 setupAuthMe(bot, config)
 
-bot.on('spawn', () => {
-  console.log(`${config.username} on edukalt serveris!`)
+bot.on('login', () => {
+  console.log('Bot ühendus serveri võrku (login sündmus).')
 })
 
-bot.on('kicked', (reason) => console.log('Välja visatud:', reason))
-bot.on('error', (err) => console.log('Viga:', err))
+bot.on('spawn', () => {
+  console.log(`${config.username} on edukalt maailmas!`)
+})
+
+bot.on('messagestr', (msg) => {
+  console.log('[CHAT]:', msg)
+})
+
+bot.on('kicked', (reason) => {
+  console.log('Bot visati serverist välja! Põhjus:', reason)
+})
+
+bot.on('error', (err) => {
+  console.log('Tekkis ühenduse viga:', err)
+})
+
+bot.on('end', (reason) => {
+  console.log('Ühendus serveriga katkes. Põhjus:', reason)
+})
