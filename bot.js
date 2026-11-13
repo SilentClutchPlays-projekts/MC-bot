@@ -6,6 +6,7 @@ const setupAuthMe = require('./lib/authme')
 const setupViewer = require('./lib/viewer')
 const setupTalk = require('./lib/talk')
 const setupHit = require('./lib/hit')
+const setupJump = require('./lib/jump')
 
 // Peamine funktsioon boti käivitamiseks / Main function to start the bot
 function startBot() {
@@ -27,6 +28,7 @@ function startBot() {
   setupViewer(bot, config)
   setupTalk(bot, config)
   setupHit(bot, config)
+  setupJump(bot, config)
 
   // Sündmus: bot ühendus võrku / Event: bot connected to the network
   bot.on('login', () => {
