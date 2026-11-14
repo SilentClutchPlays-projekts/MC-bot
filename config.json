@@ -4,7 +4,7 @@
   "username": "MC_bot",
   "version": "1.21.11",
   "password": "!ThisIsWorldsBestBot!",
-  "viewerPort": 6767
+  "viewerPort": 6767,
 
   "combat": {
     "enabled": true,
