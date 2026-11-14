@@ -1,3 +1,4 @@
+
 {
   "name": "mc-bot",
   "version": "1.0.0",
@@ -23,10 +24,10 @@
   "dependencies": {
     "mineflayer": "^4.39.0",
     "prismarine-viewer": "^1.33.0",
-     "canvas": "3.2.3",
-     "http-proxy": "^1.18.1",
-     "cloudflared": "^0.7.0",
-     "mineflayer-pathfinder": "^2.4.5",
-     "minecraft-data": "^3.119.0"
+    "canvas": "3.2.3",
+    "http-proxy": "^1.18.1",
+    "cloudflared": "^0.7.0",
+    "mineflayer-pathfinder": "^2.4.5",
+    "minecraft-data": "^3.119.0"
   }
 }
