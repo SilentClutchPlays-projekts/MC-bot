@@ -6,3 +6,95 @@
   "password": "!ThisIsWorldsBestBot!",
   "viewerPort": 6767
 }
+
+{
+  "combat": {
+    "enabled": true,
+    "targetMode": "allowlist",
+    "allowedTargets": ["OpponentName"],
+    "hitIgnore": ["BotOwnerName"],
+    "friends": ["FriendOne", "FriendTwo"],
+    "ignoreSameTeam": true,
+    "maxTargetDistance": 24,
+    "targetSwitchMargin": 3,
+    "scanIntervalMs": 250,
+    "tickIntervalMs": 100,
+    "attackRange": 3.1,
+    "minCombatDistance": 2.0,
+    "chaseRange": 4.5,
+    "aimEveryMs": 180,
+    "attackCooldownMs": null,
+    "requireLineOfSight": true,
+    "weaponPriority": [
+      "netherite_sword",
+      "diamond_sword",
+      "iron_sword",
+      "stone_sword",
+      "golden_sword",
+      "wooden_sword",
+      "netherite_axe",
+      "diamond_axe",
+      "iron_axe",
+      "stone_axe",
+      "golden_axe",
+      "wooden_axe",
+      "mace",
+      "trident"
+    ],
+    "movement": {
+      "canDig": false,
+      "canOpenDoors": false,
+      "allowParkour": false,
+      "allowSprinting": true,
+      "chaseGoalRefreshMs": 1200,
+      "strafe": true,
+      "strafeChangeMs": 650,
+      "tacticalJump": true,
+      "tacticalJumpIntervalMs": 1150,
+      "tacticalJumpMinDistance": 2.1,
+      "tacticalJumpMaxDistance": 3.4,
+      "retreatDistance": 8,
+      "retreatGoalRefreshMs": 1200
+    },
+    "equipment": {
+      "autoEquipArmor": true,
+      "autoEquipWeapon": true,
+      "autoEquipOffhand": true,
+      "offhandPriority": ["totem_of_undying", "shield"],
+      "refreshMs": 2500
+    },
+    "defense": {
+      "autoEat": true,
+      "eatAtFood": 16,
+      "foodItems": [
+        "cooked_beef",
+        "cooked_porkchop",
+        "golden_carrot",
+        "cooked_mutton",
+        "cooked_chicken",
+        "cooked_salmon",
+        "baked_potato",
+        "bread",
+        "cooked_cod",
+        "rabbit_stew",
+        "mushroom_stew",
+        "beetroot_soup"
+      ],
+      "autoHeal": true,
+      "healAtHealth": 12,
+      "healItems": ["enchanted_golden_apple", "golden_apple"],
+      "autoRetreat": true,
+      "retreatAtHealth": 6,
+      "shieldHandling": true,
+      "shieldRange": 4.5,
+      "actionCooldownMs": 1800
+    },
+    "recovery": {
+      "enabled": true,
+      "stuckCooldownMs": 1200,
+      "repeatedStuckLimit": 3,
+      "repeatedStuckWindowMs": 10000
+    },
+    "logging": true
+  }
+}
