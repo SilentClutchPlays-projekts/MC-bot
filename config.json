@@ -1,3 +1,4 @@
+
 {
   "host": "TestServerForMe.aternos.me",
   "port": 25565,
@@ -8,21 +9,24 @@
 
   "combat": {
     "enabled": true,
-    "targetMode": "allowlist",
-    "allowedTargets": ["OpponentName"],
-    "hitIgnore": ["BotOwnerName"],
-    "friends": ["FriendOne", "FriendTwo"],
-    "ignoreSameTeam": true,
+    "targetMode": "all",
+    "allowedTargets": [],
+    "hitIgnore": [],
+    "friends": [],
+    "ignoreSameTeam": false,
+
     "maxTargetDistance": 24,
     "targetSwitchMargin": 3,
     "scanIntervalMs": 250,
     "tickIntervalMs": 100,
+
     "attackRange": 3.1,
     "minCombatDistance": 2.0,
     "chaseRange": 4.5,
     "aimEveryMs": 180,
     "attackCooldownMs": null,
     "requireLineOfSight": true,
+
     "weaponPriority": [
       "netherite_sword",
       "diamond_sword",
@@ -39,6 +43,7 @@
       "mace",
       "trident"
     ],
+
     "movement": {
       "canDig": false,
       "canOpenDoors": false,
@@ -54,13 +59,18 @@
       "retreatDistance": 8,
       "retreatGoalRefreshMs": 1200
     },
+
     "equipment": {
       "autoEquipArmor": true,
       "autoEquipWeapon": true,
       "autoEquipOffhand": true,
-      "offhandPriority": ["totem_of_undying", "shield"],
+      "offhandPriority": [
+        "totem_of_undying",
+        "shield"
+      ],
       "refreshMs": 2500
     },
+
     "defense": {
       "autoEat": true,
       "eatAtFood": 16,
@@ -80,19 +90,24 @@
       ],
       "autoHeal": true,
       "healAtHealth": 12,
-      "healItems": ["enchanted_golden_apple", "golden_apple"],
+      "healItems": [
+        "enchanted_golden_apple",
+        "golden_apple"
+      ],
       "autoRetreat": true,
       "retreatAtHealth": 6,
       "shieldHandling": true,
       "shieldRange": 4.5,
       "actionCooldownMs": 1800
     },
+
     "recovery": {
       "enabled": true,
       "stuckCooldownMs": 1200,
       "repeatedStuckLimit": 3,
       "repeatedStuckWindowMs": 10000
     },
+
     "logging": true
   }
 }
